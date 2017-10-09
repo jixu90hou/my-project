@@ -10,7 +10,7 @@
       <div class="tab-item" v-permission:product-delete>
         <router-link to="/seller">商家</router-link>
       </div>
-      <div class="tab-item" v-permission:product-view>
+      <div class="tab-item md-modal modal-msg md-modal-transition" v-permission:product-view>
         <router-link to="/test">测试</router-link>
       </div>
     </div>

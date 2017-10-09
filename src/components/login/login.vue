@@ -10,10 +10,10 @@
       <div>
         性別：
         <label>
-          <input type="radio" value="男" v-model="user.gender"> 男
+          <input type="radio" value="男" name="gender" v-model="user.gender"> 男
         </label>
         <label>
-          <input type="radio" value="女" v-model="user.gender"> 女
+          <input type="radio" value="女" name="gender" v-model="user.gender"> 女
         </label>
       </div>
 
