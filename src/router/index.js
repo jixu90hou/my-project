@@ -9,6 +9,7 @@ import input from '@/components/bootstrap/input'
 import login from '@/components/login/login'
 import card from '@/components/bootstrap/card'
 import modal from '@/components/bootstrap/modal'
+import testForm from '@/components/test/testForm'
 
 import main from '@/components/main'
 
@@ -45,6 +46,9 @@ const routes = [
   }, {
     path: '/card',
     component: card
+  }, {
+    path: '/testForm',
+    component: testForm
   }
 ]
 export default new Router({
