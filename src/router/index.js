@@ -7,6 +7,9 @@ import test from '@/components/test/test'
 import button from '@/components/bootstrap/button'
 import input from '@/components/bootstrap/input'
 import login from '@/components/login/login'
+import card from '@/components/bootstrap/card'
+import modal from '@/components/bootstrap/modal'
+
 import main from '@/components/main'
 
 Vue.use(Router)
@@ -36,6 +39,12 @@ const routes = [
   }, {
     path: '/main',
     component: main
+  }, {
+    path: '/modal',
+    component: modal
+  }, {
+    path: '/card',
+    component: card
   }
 ]
 export default new Router({

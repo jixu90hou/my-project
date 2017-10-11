@@ -6,12 +6,18 @@ import router from './router'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 import qs from 'qs'
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 Vue.prototype.$ajax = axios
 Vue.prototype.$qs = qs
 // axios.defaults.baseURL = 'http://localhost:8088'
 Vue.config.productionTip = false
 
 Vue.use(VueResource)
+Vue.use(BootstrapVue)
+
 const permissions = ['product-update', 'product-view', 'product-delete']
 Vue.directive('permission', function (el, binding) {
   if (permissions.indexOf(binding.arg) > -1) {
