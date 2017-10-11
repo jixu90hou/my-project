@@ -7,6 +7,7 @@ import test from '@/components/test/test'
 import button from '@/components/bootstrap/button'
 import input from '@/components/bootstrap/input'
 import login from '@/components/login/login'
+import main from '@/components/main'
 
 Vue.use(Router)
 
@@ -32,6 +33,9 @@ const routes = [
   }, {
     path: '/login',
     component: login
+  }, {
+    path: '/main',
+    component: main
   }
 ]
 export default new Router({
