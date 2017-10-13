@@ -10,6 +10,7 @@ import login from '@/components/login/login'
 import card from '@/components/bootstrap/card'
 import modal from '@/components/bootstrap/modal'
 import testForm from '@/components/test/testForm'
+import test1 from '@/components/test/test1'
 
 import main from '@/components/main'
 
