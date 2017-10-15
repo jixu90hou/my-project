@@ -1,42 +1,12 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-import VueResource from 'vue-resource'
-import axios from 'axios'
-import qs from 'qs'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Dialog from '@/components/dialog/Dialog.vue'
-import Vuedals from 'vuedals'
-
-Vue.prototype.$ajax = axios
-Vue.prototype.$qs = qs
-// axios.defaults.baseURL = 'http://localhost:8088'
-Vue.config.productionTip = false
-
-Vue.use(VueResource)
-Vue.use(BootstrapVue)
-Vue.use(Vuedals)
-
-const permissions = ['product-update', 'product-view', 'product-delete']
-Vue.directive('permission', function (el, binding) {
-  if (permissions.indexOf(binding.arg) > -1) {
-    el.style.display = 'block'
-  } else {
-    el.style.display = 'none'
-  }
-})
-/* eslint-disable no-new */
-
 /* eslint-disable no-undef */
-// eslint-disable-next-line no-undef
+import Vue from 'vue'
 
-import Component from './component'
-
+const Bus = Vuedals.Bus
+const Component = Vuedals.Component
 const Plugin = Vuedals.default
+
+Vue.use(Plugin)
+
 // Sample component
 const Sample = {
   name: 'sample-component',
@@ -68,6 +38,7 @@ const Sample = {
 
 // First sample modal
 const ModalComponent1 = {
+
   name: 'inside-modal-1',
 
   props: ['example'],
@@ -94,14 +65,18 @@ const ModalComponent2 = {
 
   methods: {
     openModal () {
-      this.$vuedals.open({
-        dismisable: false,
-        component: ModalComponent3
+      this.$emit('vuedals:new', {
+        dismissable: false,
+        escapable: true,
+        component: ModalComponent3,
+        onClose (data) {
+          console.log('[Vuedals] Data from component:', data)
+        }
       })
     },
 
     closeModal () {
-      this.$vuedals.close()
+      this.$emit('vuedals:close')
     }
   },
 
@@ -123,13 +98,24 @@ const ModalComponent3 = {
 
   methods: {
     close () {
-      this.$vuedals.close()
+      Bus.$emit('close', {
+        sample: [1, 2, 3]
+      })
+    },
+
+    closePrevious () {
+      Bus.$emit('close', {
+        $index (current) {
+          return current - 1
+        }
+      })
     }
   },
 
   template: `<div>
         <h3>INCEPTION</h3>
         <p class="text-right">
+            <span class="btn btn-default" @click="closePrevious()">Close previous modal</span>
             <span class="btn btn-default" @click="close()">Close</span>
         </p>
     </div>`
@@ -137,19 +123,18 @@ const ModalComponent3 = {
 
 // Our app
 new Vue({
+  name: 'example',
+
   el: '#app',
-  router,
+
   components: {
     vuedals: Component,
-    sample: Sample,
-    App
+    sample: Sample
   },
 
   methods: {
     openModal () {
-      var _this = this
-      console.log('====================', this)
-      this.$vuedals.open({
+      Bus.$emit('new', {
         title: 'New modal window',
         component: ModalComponent1,
         props: {
