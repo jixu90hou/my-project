@@ -9,8 +9,14 @@ import qs from 'qs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Dialog from '@/components/dialog/Dialog.vue'
 import Vuedals from 'vuedals'
+import SweetModal from '@/components/dialog/SweetModal'
+import SweetModalTab from '@/components/dialog/SweetModalTab'
+
+export {
+  SweetModal,
+  SweetModalTab
+}
 
 Vue.prototype.$ajax = axios
 Vue.prototype.$qs = qs
@@ -38,80 +44,3 @@ var vm = new Vue({
     App
   }
 })
-
-import Bus from './bus'
-import Component from './component.vue'
-
-export default {
-  install (Vue) {
-    // Global $vuedals property
-    Vue.prototype.$vuedals = new Vue({
-      name: '$vuedals',
-
-      created () {
-        Bus.$on('opened', data => {
-          this.$emit('vuedals:opened', data)
-        })
-
-        Bus.$on('closed', data => {
-          this.$emit('vuedals:closed', data)
-        })
-
-        Bus.$on('destroyed', data => {
-          this.$emit('vuedals:destroyed', data)
-        })
-
-        this.$on('new', options => {
-          alert('-----333333-------')
-          this.open(options)
-        })
-
-        this.$on('close', data => {
-          this.close(data)
-        })
-
-        this.$on('dismiss', index => {
-          this.dismiss(index || null)
-        })
-      },
-
-      methods: {
-        open (options = null) {
-          alert('method--------3333')
-          Bus.$emit('new', options)
-        },
-
-        close (data = null) {
-          Bus.$emit('close', data)
-        },
-
-        dismiss (index = null) {
-          Bus.$emit('dismiss', index)
-        }
-      }
-    })
-
-    // Mixer for components
-    Vue.mixin({
-      created () {
-        this.$on('vuedals:new', options => {
-          console.log('Vue.mixin----->')
-          Bus.$emit('new', options)
-        })
-
-        this.$on('vuedals:close', data => {
-          Bus.$emit('close', data)
-        })
-
-        this.$on('vuedals:dismiss', index => {
-          Bus.$emit('dismiss', index)
-        })
-      }
-    })
-  }
-}
-
-export {
-  Bus,
-  Component
-}

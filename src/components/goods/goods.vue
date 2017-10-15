@@ -1,6 +1,8 @@
 <template>
   <div>
-
+    <div class="tab-item">
+      <router-link to="/comment">评论</router-link>
+    </div>
     <div class="goods" @click="changeStatus" data-value="aa">销售货物</div>
     <div>===============商品列表===========</div>
     <div><input type="text" @change="changeInfo()" v-model="goodsInfo"/></div>
