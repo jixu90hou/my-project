@@ -20,7 +20,6 @@ Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(BootstrapVue)
 Vue.use(Vuedals)
-
 const permissions = ['product-update', 'product-view', 'product-delete']
 Vue.directive('permission', function (el, binding) {
   if (permissions.indexOf(binding.arg) > -1) {
@@ -29,144 +28,90 @@ Vue.directive('permission', function (el, binding) {
     el.style.display = 'none'
   }
 })
-/* eslint-disable no-new */
-
-/* eslint-disable no-undef */
-// eslint-disable-next-line no-undef
-
-import Component from './component'
-
-const Plugin = Vuedals.default
-// Sample component
-const Sample = {
-  name: 'sample-component',
-
-  methods: {
-    openNewModal () {
-      this.$vuedals.open({
-        title: 'Cutie',
-
-        component: {
-          name: 'inside-modal',
-
-          template: `<div>Im a cute modal</div>`
-        }
-      })
-    }
-  },
-
-  template: `
-        <div class="sample-component">
-            <p>
-                <h4>Sample Component</h4>
-            </p>
-            <p>
-                <span class="btn btn-primary" @click="openNewModal()">Open a Modal from a component</span>
-            </p>
-        </div>`
-}
-
-// First sample modal
-const ModalComponent1 = {
-  name: 'inside-modal-1',
-
-  props: ['example'],
-
-  methods: {
-    openModal () {
-      this.$emit('vuedals:new', {
-        title: 'Modal in modal!  wow!',
-        component: ModalComponent2
-      })
-    }
-  },
-
-  template: `<div>
-        <p>This is a component inside the modal, you can pass some props by using a "props" options.</p>
-        <blockquote>{{ example }}</blockquote>
-        <span class="btn btn-primary" @click="openModal()">Open another modal</span>
-    </div>`
-}
-
-// Second sample component
-const ModalComponent2 = {
-  name: 'inside-modal-2',
-
-  methods: {
-    openModal () {
-      this.$vuedals.open({
-        dismisable: false,
-        component: ModalComponent3
-      })
-    },
-
-    closeModal () {
-      this.$vuedals.close()
-    }
-  },
-
-  template: `<div>
-        <p>
-            <h3>How awesome is this?</h3>
-        </p>
-
-        <p class="text-right">
-            <span class="btn btn-primary" @click="openModal()">Another modal?</span>
-            <span class="btn btn-default" @click="closeModal()">Close</span>
-        </p>
-    </div>`
-}
-
-// Third sample component
-const ModalComponent3 = {
-  name: 'inside-modal-3',
-
-  methods: {
-    close () {
-      this.$vuedals.close()
-    }
-  },
-
-  template: `<div>
-        <h3>INCEPTION</h3>
-        <p class="text-right">
-            <span class="btn btn-default" @click="close()">Close</span>
-        </p>
-    </div>`
-}
 
 // Our app
-new Vue({
+var vm = new Vue({
   el: '#app',
   router,
+  template: '<App/>',
   components: {
-    vuedals: Component,
-    sample: Sample,
     App
-  },
-
-  methods: {
-    openModal () {
-      var _this = this
-      console.log('====================', this)
-      this.$vuedals.open({
-        title: 'New modal window',
-        component: ModalComponent1,
-        props: {
-          example: 'This text for example, comes from a prop'
-        }
-      })
-    }
-  },
-
-  template: `<div>
-        <p>
-            <h3>Hello! You can open a new modal window if you like!</h3>
-            <span class="btn btn-primary" @click="openModal()">New Modal</span>
-        </p>
-
-        <sample></sample>
-
-        <vuedals></vuedals>
-    </div>`
+  }
 })
+
+import Bus from './bus'
+import Component from './component.vue'
+
+export default {
+  install (Vue) {
+    // Global $vuedals property
+    Vue.prototype.$vuedals = new Vue({
+      name: '$vuedals',
+
+      created () {
+        Bus.$on('opened', data => {
+          this.$emit('vuedals:opened', data)
+        })
+
+        Bus.$on('closed', data => {
+          this.$emit('vuedals:closed', data)
+        })
+
+        Bus.$on('destroyed', data => {
+          this.$emit('vuedals:destroyed', data)
+        })
+
+        this.$on('new', options => {
+          alert('-----333333-------')
+          this.open(options)
+        })
+
+        this.$on('close', data => {
+          this.close(data)
+        })
+
+        this.$on('dismiss', index => {
+          this.dismiss(index || null)
+        })
+      },
+
+      methods: {
+        open (options = null) {
+          alert('method--------3333')
+          Bus.$emit('new', options)
+        },
+
+        close (data = null) {
+          Bus.$emit('close', data)
+        },
+
+        dismiss (index = null) {
+          Bus.$emit('dismiss', index)
+        }
+      }
+    })
+
+    // Mixer for components
+    Vue.mixin({
+      created () {
+        this.$on('vuedals:new', options => {
+          console.log('Vue.mixin----->')
+          Bus.$emit('new', options)
+        })
+
+        this.$on('vuedals:close', data => {
+          Bus.$emit('close', data)
+        })
+
+        this.$on('vuedals:dismiss', index => {
+          Bus.$emit('dismiss', index)
+        })
+      }
+    })
+  }
+}
+
+export {
+  Bus,
+  Component
+}
