@@ -3,7 +3,7 @@
     <template slot="userName" scope="row">{{row.item.first_name}} {{row.item.last_name}}</template>
     <template slot="actions" scope="row">
       <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
-      <b-btn size="sm" @click.stop="selectedUser(row)" variant="outline-success">Details</b-btn>
+      <b-btn size="sm" @click.stop="selectedUser(row)" variant="outline-success">Selected</b-btn>
     </template>
   </b-table>
 </template>
@@ -32,6 +32,7 @@
       selectedUser (row) {
         var _parent = this.$parent.$parent
         _parent.user = row.item
+        _parent.form.userId = row.item.userId
         _parent.$refs.userListModal.close()
       }
     }

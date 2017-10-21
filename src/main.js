@@ -10,12 +10,12 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuedals from 'vuedals'
+// For ES6 module
 
 Vue.prototype.$ajax = axios
 Vue.prototype.$qs = qs
 // axios.defaults.baseURL = 'http://localhost:8088'
 Vue.config.productionTip = false
-
 Vue.use(VueResource)
 Vue.use(BootstrapVue)
 Vue.use(Vuedals)

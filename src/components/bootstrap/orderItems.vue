@@ -19,6 +19,8 @@
 </template>
 
 <script>
+  import { MessageBox } from 'vue-msgbox'
+
   const items = [
     {orderItemId: 410011, productId: 11123, productName: '小米note4屏幕', productQty: 10},
     {orderItemId: 510012, productId: 22334, productName: 'iphone7耳机', productQty: 6},
@@ -49,19 +51,18 @@
         this.$http.get('/api/getOrderItems').then((res) => {
           res = res.body
           if (res.errno === 0) {
-            var finalOrderItems = this.$parent.$parent.form.orderItems
+            var orderItemsMap = this.$parent.$parent.orderItemsMap
             var realItems = []
             var _items = res.data
             _items.forEach(s => {
               if (s.orderId === this.orderId) {
                 this.$set(s, 'initQty', s.productQty)
                 realItems.push(s)
-                finalOrderItems.push(s)
+                orderItemsMap.set(s.orderItemId, s)
               }
             })
             this.items = realItems
             // add form orderItems
-            console.log('realItems:', realItems)
             //  console.log('finalOrderItems:', finalOrderItems)
           }
         })
@@ -75,6 +76,7 @@
         console.log(row.item)
         var item = row.item
         if (item.productQty + 1 > item.initQty) {
+          //  MessageBox('Good job!', 'You clicked the button!', 'success')// title, message, type
         } else {
           item.productQty++
         }
@@ -82,6 +84,7 @@
       subQty (row) {
         var item = row.item
         if (item.productQty - 1 === 0) {
+          // MessageBox('Good job!', 'You clicked the button!', 'success')// title, message, type
         } else {
           item.productQty--
         }
@@ -91,17 +94,28 @@
         var orderIdeIndex = orderIds.indexOf(this.orderId)
         if (orderIdeIndex > -1) {
           orderIds.splice(orderIdeIndex, 1)
+          var orderItemsMap = this.$parent.$parent.orderItemsMap
+          console.log(orderItemsMap)
+          for (var [key, value] of orderItemsMap) {
+            if (value.orderId === this.orderId) {
+              orderItemsMap.delete(value.orderItemId)
+            }
+          }
+          // orderItemsMap.remove(row.item.orderItemId)
         }
       },
       deleteOrderItem (row) {
         var _items = this.items
         _items.forEach(s => {
           if (s.orderItemId === row.orderItemId) {
+            _items.splice(orderItemIndex, 1)
           }
         })
         var orderItemIndex = _items.indexOf(row.item)
         if (orderItemIndex > -1) {
           _items.splice(orderItemIndex, 1)
+          var orderItemsMap = this.$parent.$parent.orderItemsMap
+          orderItemsMap.delete(row.item.orderItemId)
         }
       }
     }

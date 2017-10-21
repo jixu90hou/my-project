@@ -3,7 +3,7 @@
     <b-form @submit="onSubmit">
       <b-form-group id="exampleInputGroup1" label="Select User:" label-for="exampleInput1"
                     description="We'll never share your name with any one">
-        <b-form-input id="exampleInput1" @click.native="$refs.userListModal.open()" readonly type="text"
+        <b-form-input id="exampleInput1" @click.native="$refs.userListModal.open()" readonly required type="text"
                       v-model="user.userId"/>
       </b-form-group>
       <b-form-group id="exampleInputGroupList1" label="Select Order:" label-for="exampleInputList1"
@@ -61,17 +61,30 @@
         order: {
           orderId: ''
         },
+        orderItemsMap: new Map(),
         form: {
           orderItems: [],
-          name: ''
+          name: '',
+          userId: ''
         }
       }
     },
     methods: {
       onSubmit (event) {
         event.preventDefault()
-        console.log(JSON.stringify(this.form))
-        alert(JSON.stringify(this.form))
+        var form = this.form
+        if (form.userId === '') {
+          return
+        }
+        var maps = this.orderItemsMap
+        for (var [key, value] of maps) form.orderItems.push(value)
+        if (form.orderItems.length === 0) {
+          alert('Please select order item ')
+          return false
+        }
+        console.log(JSON.stringify(form))
+        alert(JSON.stringify(form))
+        form.orderItems = []
       },
       format (value) {
         return value.toLowerCase()
