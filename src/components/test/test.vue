@@ -4,7 +4,7 @@
     <div v-for="item in supports">
       <span data-value="item.type">{{item.description}}</span>
     </div>
-    <a @click="$refs.nested.open()">open</a>
+    <a @click="$refs.nested.open()"><b-btn variant="primary">open</b-btn></a>
     <sweet-modal ref="nested">
       This is the parent modal.
       <a @click="$refs.nestedChild.open()">

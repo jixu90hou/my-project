@@ -21,6 +21,50 @@
       "password": "ccc"
     }
   ],
+  "orderItems": [
+    {
+      "orderItemId": 410011,
+      "orderId": 1001,
+      "productId": 11121,
+      "productName": "红米屏幕1",
+      "productQty": 33
+    },
+    {
+      "orderItemId": 410012,
+      "orderId": 1001,
+      "productId": 11122,
+      "productName": "小米note4屏幕2",
+      "productQty": 11
+    },
+    {
+      "orderItemId": 410013,
+      "orderId": 1002,
+      "productId": 11123,
+      "productName": "魅族屏幕3",
+      "productQty": 5
+    },
+    {
+      "orderItemId": 410014,
+      "orderId": 1002,
+      "productId": 11124,
+      "productName": "三星note7屏幕4",
+      "productQty": 3
+    },
+    {
+      "orderItemId": 410015,
+      "orderId": 1003,
+      "productId": 11125,
+      "productName": "iphoneX屏幕5",
+      "productQty": 6
+    },
+    {
+      "orderItemId": 410016,
+      "orderId": 1003,
+      "productId": 11126,
+      "productName": "华为mate10屏幕6",
+      "productQty": 10
+    }
+  ],
   "seller": {
     "name": "粥品香坊（回龙观）",
     "description": "蜂鸟专送",

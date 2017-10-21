@@ -31,6 +31,13 @@ var ratings = appData.ratings
 var permissions = appData.permissions
 var users = appData.users
 var apiRoutes = express.Router()
+var orderItems = appData.orderItems
+apiRoutes.get('/getOrderItems', function (req, res) {
+  res.json({
+    errno: 0,
+    data: orderItems
+  })
+})
 apiRoutes.get('/seller', function (req, res) {
   res.json({
     errno: 0,

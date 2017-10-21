@@ -10,13 +10,6 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import Vuedals from 'vuedals'
-import SweetModal from '@/components/dialog/SweetModal'
-import SweetModalTab from '@/components/dialog/SweetModalTab'
-
-export {
-  SweetModal,
-  SweetModalTab
-}
 
 Vue.prototype.$ajax = axios
 Vue.prototype.$qs = qs
