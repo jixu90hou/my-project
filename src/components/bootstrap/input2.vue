@@ -1,36 +1,32 @@
 <template>
   <div>
     <b-form @submit="onSubmit">
-      <b-form-group id="exampleInputGroup1" label="Select User:" label-for="exampleInput1"
-                    description="We'll never share your name with any one">
+      <b-input-group left="Select&nbsp;&nbsp;User:" label-for="exampleInput1"
+                     description="We'll never share your name with any one">
         <b-form-input id="exampleInput1" @click.native="$refs.userListModal.open()" readonly required type="text"
-                      v-model="user.userId"/>
-      </b-form-group>
-      <b-form-group id="exampleInputGroupList1" label="Select Order:" label-for="exampleInputList1"
+                      v-model="user.userId"></b-form-input>
+      </b-input-group>
+      <b-form-group left="Select&nbsp;Order:" label="Select Order:"
                     description="We'll never share your order with any one">
-        <!-- <b-form-input id="exampleInputList1" @click.native="$refs.orderListModal.open()" readonly type="text"
-                       v-model="order.orderId"/>-->
-        <span @click="$refs.orderListModal.open()"><img style="width: 150px" src="../img/plus23.png"></span>
-        <div>
-          <div v-for="orderId in orderIds">
-            <order-items :orderId="orderId"></order-items>
+        <div style="cursor: pointer" @click="$refs.orderListModal.open()">
+          <img style="width: 100px" src="../img/plus23.png">
+        </div>
+        <div v-for="order in orderList">
+          <div v-if="order.delete!=1">
+            <order-items :order="order"></order-items>
           </div>
         </div>
       </b-form-group>
-      <b-form-group id="exampleInputGroup2" label="Your name:" label-for="exampleInput2">
+      <b-input-group left="Your&nbsp;&nbsp;&nbsp;&nbsp;name:" id="exampleInputGroup2">
         <b-form-input id="exampleInput2" type="text" v-model="form.name" :formatter="format" required
                       placehoder="Enter name"/>
-        <div>Name: {{form.name}}</div>
-      </b-form-group>
+      </b-input-group>
+      <div>Name: {{form.name}}</div>
+
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="secondary">Reset</b-button>
     </b-form>
     <hr/>
-    <!--    <b-embed type="iframe"
-                 aspect="16by9"
-                 src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-                 allowfullscreen
-        ></b-embed>-->
     <div>
       <sweet-modal ref="userListModal">
         <user-list></user-list>
@@ -61,7 +57,7 @@
         order: {
           orderId: ''
         },
-        orderItemsMap: new Map(),
+        orderList: [],
         form: {
           orderItems: [],
           name: '',
@@ -76,8 +72,7 @@
         if (form.userId === '') {
           return
         }
-        var maps = this.orderItemsMap
-        for (var [key, value] of maps) form.orderItems.push(value)
+        console.log(this.orderList)
         if (form.orderItems.length === 0) {
           alert('Please select order item ')
           return false

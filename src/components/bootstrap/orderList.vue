@@ -28,11 +28,15 @@
     methods: {
       selectedOrder (row) {
         var _parent = this.$parent.$parent
-        _parent.order = row.item
+        _parent.order.orderId = row.item.orderId
         var orderItems = _parent.orderIds
+        console.log('----test2222--->', _parent.order)
         if (orderItems.indexOf(row.item.orderId) === -1) {
           _parent.orderIds.push(row.item.orderId)
-          console.log('orderIds:', _parent.orderIds)
+          // _parent.order.orderMap = new Map()
+          _parent.orderList.push({'orderId': row.item.orderId})
+          // console.log(' _parent.orderList:', _parent.orderList)
+          console.log('---orderMap---->', _parent.orderMap)
           _parent.$refs.orderListModal.close()
         } else {
           alert('Order item had selected')

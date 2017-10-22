@@ -1,7 +1,7 @@
 <template>
   <div style="border: solid #ddd;">
     <div style="background: #e9ecef;padding:0.6rem;">
-      <div style="display: inline-block;"><label style="font-weight: bold;">Order ID:</label> {{orderId}}</div>
+      <div style="display: inline-block;"><label style="font-weight: bold;">Order ID:</label> {{order.orderId}}</div>
       <div style="display: inline-block;float:right;padding-right:2.2rem;">
         <b-btn size="sm" variant="outline-success" @click.stop="deleteOrder">Delete</b-btn>
       </div>
@@ -12,6 +12,7 @@
         <b-btn size="sm" class="item-border" @click="addQty(row)">+</b-btn>
         <b-btn size="sm" class="item-border" @click="subQty(row)" style="margin-right:6px;" id="subQty">-</b-btn>
         <b-btn size="sm" variant="outline-success" @click.stop="deleteOrderItem(row)">Delete</b-btn>
+        <b-btn size="sm" variant="primary" @click.stop="selectProblem(row)">Select problem</b-btn>
       </template>
     </b-table>
   </div>
@@ -29,12 +30,21 @@
   ]
 
   export default {
-    props: ['orderId'],
+    props: ['order'],
+    watch: {
+      order: {
+        handler: function (order, oldOrder) {
+          console.log('watch---->', order)
+        },
+        deep: true// 对象内部的属性监听，也叫深度监听
+      }
+    },
     data () {
       return {
         items: [],
         fields: {
           orderItemId: {label: 'Order Item ID'},
+          orderId: {label: 'Order ID'},
           productId: {label: 'Product ID', 'class': 'text-center'},
           productName: {label: 'Product Name', 'class': 'text-center'},
           productQty: {label: 'Product Qty', 'class': 'text-center'},
@@ -51,26 +61,31 @@
         this.$http.get('/api/getOrderItems').then((res) => {
           res = res.body
           if (res.errno === 0) {
-            var orderItemsMap = this.$parent.$parent.orderItemsMap
+            var orderList = this.$parent.$parent.orderList
+            var orderMap = this.$parent.$parent.order.orderMap
             var realItems = []
             var _items = res.data
             _items.forEach(s => {
-              if (s.orderId === this.orderId) {
+              if (s.orderId === this.order.orderId) {
                 this.$set(s, 'initQty', s.productQty)
                 realItems.push(s)
-                orderItemsMap.set(s.orderItemId, s)
               }
             })
             this.items = realItems
+            var _this = this
+            orderList.forEach(s => {
+              if (s.orderId === _this.order.orderId) {
+                _this.$set(s, 'orderItems', _this.items)
+              }
+            })
+            console.log('orderList--->', orderList)
+            // orderMap.set(this.orderId, this.items)
             // add form orderItems
             //  console.log('finalOrderItems:', finalOrderItems)
           }
         })
       },
-      selectedOrder (row) {
-        var _parent = this.$parent.$parent
-        _parent.order = row.item
-        _parent.$refs.orderListModal.close()
+      selectProblem (row) {
       },
       addQty (row) {
         console.log(row.item)
@@ -89,22 +104,52 @@
           item.productQty--
         }
       },
-      deleteOrder () {
-        var orderIds = this.$parent.$parent.orderIds
-        var orderIdeIndex = orderIds.indexOf(this.orderId)
-        if (orderIdeIndex > -1) {
-          orderIds.splice(orderIdeIndex, 1)
-          var orderItemsMap = this.$parent.$parent.orderItemsMap
-          console.log(orderItemsMap)
-          for (var [key, value] of orderItemsMap) {
-            if (value.orderId === this.orderId) {
-              orderItemsMap.delete(value.orderItemId)
-            }
+      deleteOrderIfItemIsLast () {
+        var _parent = this.$parent.$parent
+        var orderItemsMap = _parent.orderItemsMap
+        var orderIds = _parent.orderIds
+        // 查询是否存在oderItem是最后一个,如果是最后一个直接移除orderIds的orderId
+        var existOrderItem = false
+        for (var [key, value] of orderItemsMap) {
+          if (value.orderId === this.order.orderId) {
+            existOrderItem = true
           }
-          // orderItemsMap.remove(row.item.orderItemId)
+        }
+        if (!existOrderItem) {
+          var orderIdIndex = orderIds.indexOf(this.order.orderId)
+          if (orderIdIndex > -1) {
+            console.log('before orderIds:', orderIds)
+            //  orderIds.splice(orderIdIndex, 1)
+            console.log('after orderIds:', orderIds)
+          }
         }
       },
+      deleteOrder () {
+        var _this = this
+        var _items = this.items
+        var orderList = _this.$parent.$parent.orderList
+        var orderIdeIndex = orderList.indexOf(this.order.orderId)
+        var newOrderList = []
+        for (var i = 0; i < orderList.length; i++) {
+          if (_this.order.orderId === orderList[i].orderId) {
+            // var aa = orderList.splice(i, 1)
+            _this.$set(orderList[i], 'delete', 1)
+            // orderList.splice(i, 1)
+            // newOrderList.push(orderList[i])
+            // orderList.splice(i, 1)
+            // _this.$set(orderList[0].orderItems[0], 'aaa', 22)
+            // newOrderList.push(orderList[i])
+            // _this.$parent.$parent.orderList
+            // orderList.push({'orderId': 22})
+          }
+        }
+        // _this.$parent.$parent.orderList = [{'orderId': 1, 'orderItems': []}]
+        // _this.$parent.$parent.orderList = newOrderList
+        // newOrderList.forEach(s => _this.$parent.$parent.orderList.push(s))
+        console.log(newOrderList, _this.$parent.$parent.orderList)
+      },
       deleteOrderItem (row) {
+        var _this = this
         var _items = this.items
         _items.forEach(s => {
           if (s.orderItemId === row.orderItemId) {
@@ -114,8 +159,16 @@
         var orderItemIndex = _items.indexOf(row.item)
         if (orderItemIndex > -1) {
           _items.splice(orderItemIndex, 1)
-          var orderItemsMap = this.$parent.$parent.orderItemsMap
-          orderItemsMap.delete(row.item.orderItemId)
+          /*  var orderItemsMap = this.$parent.$parent.oderList
+            orderItemsMap.delete(row.item.orderItemId)
+            this.deleteOrderIfItemIsLast() */
+          // this.order.orderItems.indexOf()
+          var orderItems = _this.order.orderItems
+          for (var i = 0; i < orderItems.length; i++) {
+            if (orderItems[i].orderItemId === row.orderItemId) {
+              orderItems.splice(i, 1)
+            }
+          }
         }
       }
     }
