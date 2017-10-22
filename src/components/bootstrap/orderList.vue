@@ -29,14 +29,16 @@
       selectedOrder (row) {
         var _parent = this.$parent.$parent
         _parent.order.orderId = row.item.orderId
-        var orderItems = _parent.orderIds
-        console.log('----test2222--->', _parent.order)
-        if (orderItems.indexOf(row.item.orderId) === -1) {
-          _parent.orderIds.push(row.item.orderId)
-          // _parent.order.orderMap = new Map()
+        var orderList = _parent.orderList
+        let exist = false
+        for (let i = 0; i < orderList.length; i++) {
+          let order = orderList[i]
+          if (order.delete !== 1 && order.orderId === row.item.orderId) {
+            exist = true
+          }
+        }
+        if (!exist) { // 不存在
           _parent.orderList.push({'orderId': row.item.orderId})
-          // console.log(' _parent.orderList:', _parent.orderList)
-          console.log('---orderMap---->', _parent.orderMap)
           _parent.$refs.orderListModal.close()
         } else {
           alert('Order item had selected')

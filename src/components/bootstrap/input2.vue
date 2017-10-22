@@ -53,7 +53,6 @@
         user: {
           userId: ''
         },
-        orderIds: [],
         order: {
           orderId: ''
         },
@@ -72,7 +71,12 @@
         if (form.userId === '') {
           return
         }
-        console.log(this.orderList)
+        this.orderList.forEach(s => {
+          if (s.delete !== 1) {
+            form.orderItems.push(s)
+          }
+        })
+        // console.log(this.orderList)
         if (form.orderItems.length === 0) {
           alert('Please select order item ')
           return false

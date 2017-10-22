@@ -31,14 +31,6 @@
 
   export default {
     props: ['order'],
-    watch: {
-      order: {
-        handler: function (order, oldOrder) {
-          console.log('watch---->', order)
-        },
-        deep: true// 对象内部的属性监听，也叫深度监听
-      }
-    },
     data () {
       return {
         items: [],
@@ -62,6 +54,7 @@
           res = res.body
           if (res.errno === 0) {
             var orderList = this.$parent.$parent.orderList
+            console.log('all:', orderList)
             var orderMap = this.$parent.$parent.order.orderMap
             var realItems = []
             var _items = res.data
@@ -78,10 +71,6 @@
                 _this.$set(s, 'orderItems', _this.items)
               }
             })
-            console.log('orderList--->', orderList)
-            // orderMap.set(this.orderId, this.items)
-            // add form orderItems
-            //  console.log('finalOrderItems:', finalOrderItems)
           }
         })
       },
@@ -118,9 +107,6 @@
         if (!existOrderItem) {
           var orderIdIndex = orderIds.indexOf(this.order.orderId)
           if (orderIdIndex > -1) {
-            console.log('before orderIds:', orderIds)
-            //  orderIds.splice(orderIdIndex, 1)
-            console.log('after orderIds:', orderIds)
           }
         }
       },
@@ -132,43 +118,21 @@
         var newOrderList = []
         for (var i = 0; i < orderList.length; i++) {
           if (_this.order.orderId === orderList[i].orderId) {
-            // var aa = orderList.splice(i, 1)
             _this.$set(orderList[i], 'delete', 1)
-            // orderList.splice(i, 1)
-            // newOrderList.push(orderList[i])
-            // orderList.splice(i, 1)
-            // _this.$set(orderList[0].orderItems[0], 'aaa', 22)
-            // newOrderList.push(orderList[i])
-            // _this.$parent.$parent.orderList
-            // orderList.push({'orderId': 22})
           }
         }
-        // _this.$parent.$parent.orderList = [{'orderId': 1, 'orderItems': []}]
-        // _this.$parent.$parent.orderList = newOrderList
-        // newOrderList.forEach(s => _this.$parent.$parent.orderList.push(s))
-        console.log(newOrderList, _this.$parent.$parent.orderList)
       },
       deleteOrderItem (row) {
         var _this = this
-        var _items = this.items
-        _items.forEach(s => {
-          if (s.orderItemId === row.orderItemId) {
-            _items.splice(orderItemIndex, 1)
+        var orderItems = _this.order.orderItems
+        let lastOrderItem = true
+        for (var i = 0; i < orderItems.length; i++) {
+          if (orderItems[i].orderItemId === row.item.orderItemId) {
+            orderItems.splice(i, 1)
           }
-        })
-        var orderItemIndex = _items.indexOf(row.item)
-        if (orderItemIndex > -1) {
-          _items.splice(orderItemIndex, 1)
-          /*  var orderItemsMap = this.$parent.$parent.oderList
-            orderItemsMap.delete(row.item.orderItemId)
-            this.deleteOrderIfItemIsLast() */
-          // this.order.orderItems.indexOf()
-          var orderItems = _this.order.orderItems
-          for (var i = 0; i < orderItems.length; i++) {
-            if (orderItems[i].orderItemId === row.orderItemId) {
-              orderItems.splice(i, 1)
-            }
-          }
+        }
+        if (orderItems.length === 0) {
+          _this.$set(_this.order, 'delete', 1)
         }
       }
     }
