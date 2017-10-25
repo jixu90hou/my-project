@@ -16,6 +16,11 @@ import main from '@/components/main'
 import table from '@/components/bootstrap/table'
 import dynamicTables from '@/components/bootstrap/dynamicTables'
 import alert from '@/components/bootstrap/alert'
+import CollapseExample from '@/components/bootstrap/CollapseExample'
+import Tree0 from '@/components/tree/Tree0'
+import Tree1 from '@/components/tree/Tree1'
+import Tree2 from '@/components/tree/Tree2'
+import Tree3 from '@/components/tree/Tree3'
 
 Vue.use(Router)
 
@@ -68,6 +73,21 @@ const routes = [
   }, {
     path: '/alert',
     component: alert
+  }, {
+    path: '/collapse',
+    component: CollapseExample
+  }, {
+    path: '/tree0',
+    component: Tree0
+  }, {
+    path: '/tree1',
+    component: Tree1
+  }, {
+    path: '/tree2',
+    component: Tree2
+  }, {
+    path: '/tree3',
+    component: Tree3
   }
 ]
 export default new Router({
