@@ -21,6 +21,7 @@ import Tree0 from '@/components/tree/Tree0'
 import Tree1 from '@/components/tree/Tree1'
 import Tree2 from '@/components/tree/Tree2'
 import Tree3 from '@/components/tree/Tree3'
+import TreeExample from '@/components/tree/TreeExample'
 
 Vue.use(Router)
 
@@ -88,6 +89,9 @@ const routes = [
   }, {
     path: '/tree3',
     component: Tree3
+  }, {
+    path: '/treeExample',
+    component: TreeExample
   }
 ]
 export default new Router({
