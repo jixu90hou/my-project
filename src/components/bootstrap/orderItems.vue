@@ -7,7 +7,7 @@
       </div>
     </div>
     <b-table striped hover :items="items" :fields="fields">
-      <template slot="actions" scope="row">
+      <template slot="actions" slot-scope="row">
         <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
         <b-btn size="sm" class="item-border" @click="addQty(row)">+</b-btn>
         <b-btn size="sm" class="item-border" @click="subQty(row)" style="margin-right:6px;" id="subQty">-</b-btn>

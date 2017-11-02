@@ -22,6 +22,10 @@ import Tree1 from '@/components/tree/Tree1'
 import Tree2 from '@/components/tree/Tree2'
 import Tree3 from '@/components/tree/Tree3'
 import TreeExample from '@/components/tree/TreeExample'
+import Collapse2 from '@/components/bootstrap/Collapse2'
+import ElementTree1 from '@/components/tree/ElementTree1'
+import ElementTree2 from '@/components/tree/ElementTree2'
+import Demo from '@/components/test/Demo'
 
 Vue.use(Router)
 
@@ -92,6 +96,18 @@ const routes = [
   }, {
     path: '/treeExample',
     component: TreeExample
+  }, {
+    path: '/collapse2',
+    component: Collapse2
+  }, {
+    path: '/elementTree1',
+    component: ElementTree1
+  }, {
+    path: '/elementTree2',
+    component: ElementTree2
+  }, {
+    path: '/demo',
+    component: Demo
   }
 ]
 export default new Router({

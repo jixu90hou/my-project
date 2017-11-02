@@ -9,9 +9,6 @@
 </template>
 
 <script>
-  import Vue from 'vue'
-  import axios from 'axios'
-  import { ZTree } from 'vue2-lazy-tree/src/index'
   //      import {ZTree} from './../dist/vue2-tree.min'
   //      import './../dist/vue2-tree.min.css'
   const Tree3 = {

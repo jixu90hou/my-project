@@ -9,9 +9,11 @@ import qs from 'qs'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Vuedals from 'vuedals'
-// For ES6 module
+import 'element-ui/lib/theme-chalk/index.css'
 
+import Vuedals from 'vuedals'
+import ElementUI from 'element-ui'
+// For ES6 module
 Vue.prototype.$ajax = axios
 Vue.prototype.$qs = qs
 // axios.defaults.baseURL = 'http://localhost:8088'
@@ -19,6 +21,8 @@ Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(BootstrapVue)
 Vue.use(Vuedals)
+Vue.use(ElementUI)
+//import from source code . so you can build them with your webpack or rollup ..
 const permissions = ['product-update', 'product-view', 'product-delete']
 Vue.directive('permission', function (el, binding) {
   if (permissions.indexOf(binding.arg) > -1) {
@@ -34,6 +38,6 @@ var vm = new Vue({
   router,
   template: '<App/>',
   components: {
-    App
+    App,
   }
 })

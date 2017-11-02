@@ -1,6 +1,6 @@
 <template>
   <b-table striped hover :items="items" :fields="fields">
-    <template slot="actions" scope="row">
+    <template slot="actions" slot-scope="row">
       <!-- We use click.stop here to prevent a 'row-clicked' event from also happening -->
       <b-btn size="sm" @click.stop="selectedOrder(row)" variant="outline-success">Selected</b-btn>
     </template>
