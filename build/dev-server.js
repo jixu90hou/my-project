@@ -25,6 +25,7 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 
 var appData = require('../data.json')
+var treeData=require('../tree-data.json')
 var seller = appData.seller
 var goods = appData.goods
 var ratings = appData.ratings
@@ -32,6 +33,12 @@ var permissions = appData.permissions
 var users = appData.users
 var apiRoutes = express.Router()
 var orderItems = appData.orderItems
+apiRoutes.get('/getTrees', function (req, res) {
+  res.json({
+    errno: 0,
+    data: treeData.data
+  })
+})
 apiRoutes.get('/getOrderItems', function (req, res) {
   res.json({
     errno: 0,
