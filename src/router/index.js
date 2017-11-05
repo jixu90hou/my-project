@@ -17,15 +17,12 @@ import table from '@/components/bootstrap/table'
 import dynamicTables from '@/components/bootstrap/dynamicTables'
 import alert from '@/components/bootstrap/alert'
 import CollapseExample from '@/components/bootstrap/CollapseExample'
-import Tree0 from '@/components/tree/Tree0'
-import Tree1 from '@/components/tree/Tree1'
-import Tree2 from '@/components/tree/Tree2'
-import Tree3 from '@/components/tree/Tree3'
 import TreeExample from '@/components/tree/TreeExample'
 import Collapse2 from '@/components/bootstrap/Collapse2'
 import ElementTree1 from '@/components/tree/ElementTree1'
 import ElementTree2 from '@/components/tree/ElementTree2'
 import Demo from '@/components/test/Demo'
+import Loading from '@/components/ele/Loading'
 
 Vue.use(Router)
 
@@ -82,18 +79,6 @@ const routes = [
     path: '/collapse',
     component: CollapseExample
   }, {
-    path: '/tree0',
-    component: Tree0
-  }, {
-    path: '/tree1',
-    component: Tree1
-  }, {
-    path: '/tree2',
-    component: Tree2
-  }, {
-    path: '/tree3',
-    component: Tree3
-  }, {
     path: '/treeExample',
     component: TreeExample
   }, {
@@ -108,6 +93,9 @@ const routes = [
   }, {
     path: '/demo',
     component: Demo
+  }, {
+    path: '/loading',
+    component: Loading
   }
 ]
 export default new Router({
